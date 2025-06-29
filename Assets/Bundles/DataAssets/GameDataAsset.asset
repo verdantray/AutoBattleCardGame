@@ -19,6 +19,16 @@ MonoBehaviour:
       sheetName: 00. card_data_origin
       startCell: A02
       endCell: I77
+  - updateFieldName: Recruit Data
+    sheetReader:
+      sheetName: 00. recruit_data_origin
+      startCell: A02
+      endCell: C12
+  - updateFieldName: Win Point Data
+    sheetReader:
+      sheetName: 00. win_point_data_origin
+      startCell: A02
+      endCell: C16
   cardData:
   - id: card_s_newbie
     setType: 0
@@ -620,11 +630,77 @@ MonoBehaviour:
     nameKey: name_card_werewolf
     descKey: desc_skill_rare
     imagePath: 
-  - id: card_c_werewolf
-    setType: 6
-    levelType: 3
-    basePower: 7
+  recruitData:
+  - round: 1
+    recruitLevelType: 1
     amount: 2
-    nameKey: name_card_werewolf
-    descKey: desc_skill_rare
-    imagePath: 
+  - round: 2
+    recruitLevelType: 1
+    amount: 2
+  - round: 3
+    recruitLevelType: 1
+    amount: 2
+  - round: 3
+    recruitLevelType: 2
+    amount: 1
+  - round: 4
+    recruitLevelType: 1
+    amount: 2
+  - round: 4
+    recruitLevelType: 2
+    amount: 2
+  - round: 5
+    recruitLevelType: 2
+    amount: 2
+  - round: 6
+    recruitLevelType: 2
+    amount: 2
+  - round: 6
+    recruitLevelType: 3
+    amount: 1
+  - round: 7
+    recruitLevelType: 3
+    amount: 2
+  winPointData:
+  - round: 0
+    winPoint: 0
+    weight: 0
+  - round: 0
+    winPoint: 0
+    weight: 0
+  - round: 0
+    winPoint: 0
+    weight: 0
+  - round: 0
+    winPoint: 0
+    weight: 0
+  - round: 0
+    winPoint: 0
+    weight: 0
+  - round: 0
+    winPoint: 0
+    weight: 0
+  - round: 0
+    winPoint: 0
+    weight: 0
+  - round: 0
+    winPoint: 0
+    weight: 0
+  - round: 0
+    winPoint: 0
+    weight: 0
+  - round: 0
+    winPoint: 0
+    weight: 0
+  - round: 0
+    winPoint: 0
+    weight: 0
+  - round: 0
+    winPoint: 0
+    weight: 0
+  - round: 0
+    winPoint: 0
+    weight: 0
+  - round: 0
+    winPoint: 0
+    weight: 0

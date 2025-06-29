@@ -42,8 +42,6 @@ namespace AutoBattleCardGame.Data.Editor
             Undo.RecordObject(this, $"Update {name}.{fieldName}");
             EditorUtility.SetDirty(this);
             AssetDatabase.SaveAssetIfDirty(this);
-
-            Selection.activeObject = null;
         }
 #endif
     }
