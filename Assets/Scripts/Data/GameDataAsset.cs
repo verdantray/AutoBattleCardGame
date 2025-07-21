@@ -11,6 +11,10 @@ namespace AutoBattleCardGame.Data
         [SerializeField] private List<CardData> cardData;
         [SerializeField] private List<RecruitData> recruitData;
         [SerializeField] private List<WinPointData> winPointData;
+        
+        public List<CardData> CardData => cardData;
+        public List<RecruitData> RecruitData => recruitData;
+        public List<WinPointData> WinPointData => winPointData;
 
 #if UNITY_EDITOR
         public override void UpdateDataFromSheet()

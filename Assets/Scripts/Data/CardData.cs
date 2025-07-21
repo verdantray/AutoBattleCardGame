@@ -6,15 +6,16 @@ using GoogleSheetsToUnity;
 
 namespace AutoBattleCardGame.Data
 {
+    [Flags]
     public enum SetType
     {
-        City,
-        Castle,
-        AmusementPark,
-        OuterSpace,
-        Studio,
-        Sea,
-        HauntedHouse,
+        City = 1,
+        Castle = 2,
+        AmusementPark = 4,
+        OuterSpace = 8,
+        Studio = 16,
+        Sea = 32,
+        HauntedHouse = 64,
     }
     
     public enum LevelType
