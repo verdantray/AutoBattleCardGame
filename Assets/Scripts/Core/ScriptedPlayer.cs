@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoBattleCardGame.Data;
 
@@ -14,13 +15,21 @@ namespace AutoBattleCardGame.Core
             Name = name;
         }
 
-        public Task<SelectSetTypesAction> SelectSetTypes()
+        public Task<SelectSetTypesAction> SelectSetTypesAsync()
         {
-            List<SetType> selectedSets = new List<SetType>();
-            SetType defaultSelectedSet = Enum.Parse<SetType>(GameConst.GameOption.DEFAULT_SET_TYPE);
+            SetType[] setTypes = Enum.GetValues(typeof(SetType)) as SetType[];
+            List<SetType> setTypeList = new List<SetType>(setTypes!);
             
-            selectedSets.Add(defaultSelectedSet);
+            SetType defaultSelectedSet = Enum.Parse<SetType>(GameConst.GameOption.DEFAULT_SET_TYPE);
+            setTypeList.Remove(defaultSelectedSet);
 
+            Random random = new Random();
+            SetType[] selectedSets = setTypeList
+                .OrderBy(_ => random.Next())
+                .Take(GameConst.GameOption.SELECT_SET_TYPES_AMOUNT - 1)
+                .Append(defaultSelectedSet)
+                .ToArray();
+            
             SelectSetTypesAction result = new SelectSetTypesAction(this, selectedSets);
             Task<SelectSetTypesAction> task = Task.FromResult(result);
 

@@ -10,13 +10,13 @@ namespace AutoBattleCardGame.Core
         private readonly Dictionary<int, RecruitOnRound> recruitOnRounds;
         private readonly Dictionary<int, WinPointOnRound> winPointOnRounds;
             
-        public TournamentSchedule(List<RecruitData> recruitData, List<WinPointData> winPointData)
+        public TournamentSchedule()
         {
-            recruitOnRounds = recruitData
+            recruitOnRounds = Storage.Instance.RecruitData
                 .GroupBy(data => data.round)
                 .ToDictionary(group => group.Key, RecruitOnRound.ElementSelector);
             
-            winPointOnRounds = winPointData
+            winPointOnRounds = Storage.Instance.WinPointData
                 .GroupBy(data => data.round)
                 .ToDictionary(group => group.Key, WinPointOnRound.ElementSelector);
         }

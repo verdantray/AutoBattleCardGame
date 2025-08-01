@@ -1,4 +1,3 @@
-using UnityEngine;
 
 namespace AutoBattleCardGame.Core
 {
@@ -12,7 +11,7 @@ namespace AutoBattleCardGame.Core
         public static class GameOption
         {
             public const int MAX_ROUND = 7;
-            public const int SELECT_SET_TYPES = 6;
+            public const int SELECT_SET_TYPES_AMOUNT = 6;
             public const string DEFAULT_SET_TYPE = "City";
         }
     }
