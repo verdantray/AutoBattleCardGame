@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using AutoBattleCardGame.Data;
 
 namespace AutoBattleCardGame.Core
 {
@@ -15,25 +14,50 @@ namespace AutoBattleCardGame.Core
             Name = name;
         }
 
-        public Task<SelectSetTypesAction> SelectSetTypesAsync()
+        public Task<DrawCardsFromPilesAction> DrawCardsFromPilesAsync(RecruitOnRound recruitOnRound, LevelCardPilesTemp levelCardPilesTemp)
         {
-            SetType[] setTypes = Enum.GetValues(typeof(SetType)) as SetType[];
-            List<SetType> setTypeList = new List<SetType>(setTypes!);
-            
-            SetType defaultSelectedSet = Enum.Parse<SetType>(GameConst.GameOption.DEFAULT_SET_TYPE);
-            setTypeList.Remove(defaultSelectedSet);
-
             Random random = new Random();
-            SetType[] selectedSets = setTypeList
+            var (level, amount) = recruitOnRound
+                .GetRecruitLevelAmountPairs()
                 .OrderBy(_ => random.Next())
-                .Take(GameConst.GameOption.SELECT_SET_TYPES_AMOUNT - 1)
-                .Append(defaultSelectedSet)
-                .ToArray();
+                .First();
             
-            SelectSetTypesAction result = new SelectSetTypesAction(this, selectedSets);
-            Task<SelectSetTypesAction> task = Task.FromResult(result);
+            List<Card> cardsToDraw = new List<Card>();
+            List<Card> cardsToReturn = new List<Card>();
 
-            return task;
+            while (cardsToDraw.Count < amount)
+            {
+                int amountToDraw = UnityEngine.Random.Range(0, amount - cardsToDraw.Count + 1);
+                var cardPool = levelCardPilesTemp[level].DrawCards(GameConst.GameOption.CHECKING_ON_RECRUIT_AMOUNT);
+                
+                if (amountToDraw == 0)
+                {
+                    // Do mulligan
+                    cardsToReturn.AddRange(cardPool);
+                    continue;
+                }
+                
+                var shuffledPool = cardPool.OrderBy(_ => random.Next());
+                foreach (Card card in shuffledPool)
+                {
+                    if (amountToDraw > 0)
+                    {
+                        cardsToDraw.Add(card);
+                        amountToDraw--;
+                    }
+                    else
+                    {
+                        cardsToReturn.Add(card);
+                    }
+                }
+
+                DrawCardsFromPilesAction playerFromPilesAction = new DrawCardsFromPilesAction(this, level, cardsToDraw, cardsToReturn);
+                Task<DrawCardsFromPilesAction> task = Task.FromResult(playerFromPilesAction);
+
+                return task;
+            }
+
+            return null;
         }
     }
 }

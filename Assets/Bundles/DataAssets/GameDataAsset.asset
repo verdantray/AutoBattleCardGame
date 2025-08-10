@@ -14,11 +14,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sheetAddress: 1wQ5OPEu1YpF1723OPkDaGFzqRKUCNSB9A2mby1ybu8E
   dataUpdaters:
+  - updateFieldName: Starting Card Data
+    sheetReader:
+      sheetName: 00. card_data_for_starting
+      startCell: A02
+      endCell: I06
   - updateFieldName: Card Data
     sheetReader:
-      sheetName: 00. card_data_origin
+      sheetName: 00. card_data_for_card_piles
       startCell: A02
-      endCell: I77
+      endCell: I73
   - updateFieldName: Recruit Data
     sheetReader:
       sheetName: 00. recruit_data_origin
@@ -29,6 +34,7 @@ MonoBehaviour:
       sheetName: 00. win_point_data_origin
       startCell: A02
       endCell: C16
+  startingCardData: []
   cardData:
   - id: card_s_newbie
     setType: 0

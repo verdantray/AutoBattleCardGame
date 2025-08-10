@@ -7,25 +7,35 @@ using UnityEngine;
 
 namespace AutoBattleCardGame.Core
 {
+    /// <summary>
+    /// base ContextEvent class for testing simulation
+    /// </summary>
     public abstract class ConsoleContextEventBase : IContextEvent
     {
-        protected readonly IPlayer Player;
         protected string Message;
-
-        protected ConsoleContextEventBase(IPlayer player)
-        {
-            Player = player;
-        }
 
         public void Trigger()
         {
-            Debug.Log($"Player {Player.Name} : {Message}");
+            Debug.Log(this);
+        }
+
+        public override string ToString()
+        {
+            return Message;
         }
     }
 
-    public class DeckConstructConsoleEvent : ConsoleContextEventBase
+    public class CommonConsoleEvent : ConsoleContextEventBase
     {
-        public DeckConstructConsoleEvent(IPlayer player, SetType setTypeFlag, IEnumerable<Card> cards) : base(player)
+        public CommonConsoleEvent(string message)
+        {
+            Message = message;
+        }
+    }
+
+    public class DeckConstructionConsoleEvent : ConsoleContextEventBase
+    {
+        public DeckConstructionConsoleEvent(SetType setTypeFlag, IEnumerable<Card> cards)
         {
             StringBuilder stringBuilder = new StringBuilder();
             
@@ -33,14 +43,33 @@ namespace AutoBattleCardGame.Core
             var selectedSetNames = setTypes!
                 .Where(element => setTypeFlag.HasFlag(element))
                 .Select(element => element.ToString());
-            var addedCardNames = cards.Select(card => card.Id);
 
-            stringBuilder.AppendLine($"Select {string.Join(", ", selectedSetNames)} set types");
-            stringBuilder.AppendLine(
-                "Depending on the set types chosen by player, the following cards are added to the deck.");
-            stringBuilder.Append($"{string.Join('\n', addedCardNames)}");
+            stringBuilder.AppendLine($"다음과 같은 카드 세트가 선택되었습니다. '{string.Join(", ", selectedSetNames)}'");
+            stringBuilder.AppendLine("선택된 카드 세트에 따라 다음 카드들이 A, B, C 레벨 카드 더미에 추가됩니다.");
+            stringBuilder.Append($"{string.Join('\n', cards)}");
 
             Message = stringBuilder.ToString();
+        }
+    }
+
+    public class DrawCardsConsoleEvent : ConsoleContextEventBase
+    {
+        private readonly IPlayer player;
+        
+        public DrawCardsConsoleEvent(IPlayer player, LevelType selectedLevel, List<Card> drawnCards)
+        {
+            this.player = player;
+            StringBuilder stringBuilder = new StringBuilder();
+            
+            stringBuilder.AppendLine($"{selectedLevel} 레벨의 챌린저 {drawnCards.Count}명을 영입합니다.");
+            stringBuilder.AppendLine($"영입한 챌린저들:\n{string.Join('\n', drawnCards)}");
+
+            Message = stringBuilder.ToString();
+        }
+
+        public override string ToString()
+        {
+            return $"플레이어 {player.Name} : {Message}";
         }
     }
 }

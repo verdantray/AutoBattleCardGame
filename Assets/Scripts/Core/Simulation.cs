@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using UnityEngine;
 
 namespace AutoBattleCardGame.Core
 {
@@ -8,6 +10,7 @@ namespace AutoBattleCardGame.Core
         public readonly GameContext GameContext;
         
         private readonly Queue<IGamePhase> gamePhases = new Queue<IGamePhase>();
+        private int eventIndex = 0;
         
         public Simulation(IPlayer playerA, IPlayer playerB)
         {
@@ -19,9 +22,18 @@ namespace AutoBattleCardGame.Core
         {
             gamePhases.Clear();
             gamePhases.Enqueue(new DeckConstructionPhase());
+
+            for (int round = 1; round <= GameConst.GameOption.MAX_ROUND; round++)
+            {
+                gamePhases.Enqueue(new PreparationPhase(round));
+                gamePhases.Enqueue(new RecruitPhase(round, GameContext.CurrentState.LevelCardPilesTemp));
+                gamePhases.Enqueue(new BattlePhase(round));
+            }
+            
+            gamePhases.Enqueue(new SettlementPhase());
         }
 
-        public async void Run()
+        public async Task Run()
         {
             try
             {
@@ -29,12 +41,17 @@ namespace AutoBattleCardGame.Core
                 {
                     var phase = gamePhases.Dequeue();
                     await phase.ExecutePhaseAsync(GameContext);
+
+                    for (; eventIndex <= GameContext.CollectedEvents.Count ; eventIndex++)
+                    {
+                        Debug.Log($"EventIndex : {eventIndex}");
+                        GameContext.CollectedEvents[eventIndex].Trigger();
+                    }
                 }
             }
             catch (Exception e)
             {
-                
-                throw;
+                Debug.LogWarning($"Simulation has an error occured : {e}");
             }
         }
     }

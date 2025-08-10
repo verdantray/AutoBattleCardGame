@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using AutoBattleCardGame.Data;
 
@@ -7,16 +6,20 @@ namespace AutoBattleCardGame.Core
     public class Storage
     {
         public static Storage Instance { get; private set; }
-        
-        public List<CardData> CardData;
-        public List<RecruitData> RecruitData;
-        public List<WinPointData> WinPointData;
 
-        private Storage(GameDataAsset gameDataAsset)
+        public readonly List<CardData> StartingCardData = new List<CardData>();
+        public readonly List<CardData> CardData = new List<CardData>();
+        public readonly List<RecruitData> RecruitData = new List<RecruitData>();
+        public readonly List<WinPointData> WinPointData = new List<WinPointData>();
+
+        public static void CreateInstance(GameDataAsset gameDataAsset)
         {
-            CardData = gameDataAsset.CardData;
-            RecruitData = gameDataAsset.RecruitData;
-            WinPointData = gameDataAsset.WinPointData;
+            Instance = new Storage();
+            
+            Instance.StartingCardData.AddRange(gameDataAsset.StartingCardData);
+            Instance.CardData.AddRange(gameDataAsset.CardData);
+            Instance.RecruitData.AddRange(gameDataAsset.RecruitData);
+            Instance.WinPointData.AddRange(gameDataAsset.WinPointData);
         }
     }
 }

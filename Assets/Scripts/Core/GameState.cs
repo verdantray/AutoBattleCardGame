@@ -6,61 +6,88 @@ namespace AutoBattleCardGame.Core
 {
     public class GameState
     {
-        public readonly TournamentSchedule TournamentSchedule;
-        
         public readonly PlayerState PlayerAState;
         public readonly PlayerState PlayerBState;
+        public readonly LevelCardPilesTemp LevelCardPilesTemp;
         
         public int Round;
+        
         public IPlayer PlayerHasFlag = null;
 
         public GameState(IPlayer playerA, IPlayer playerB)
         {
             PlayerAState = new PlayerState(playerA);
             PlayerBState = new PlayerState(playerB);
-            
-            TournamentSchedule = new TournamentSchedule();
+            LevelCardPilesTemp = new LevelCardPilesTemp();
         }
 
         public PlayerState GetPlayerState(IPlayer player)
         {
-            if (PlayerAState.Player == player)
+            if (PlayerAState.Player != player && PlayerBState.Player != player)
             {
-                return PlayerAState;
+                return null;
             }
 
-            if (PlayerBState.Player == player)
+            return PlayerAState.Player == player
+                ? PlayerAState
+                : PlayerBState;
+        }
+
+        public PlayerState GetTheOtherPlayerState(IPlayer player)
+        {
+            if (PlayerAState.Player != player && PlayerBState.Player != player)
             {
-                return PlayerBState;
+                return null;
             }
 
-            return null;
+            return PlayerAState.Player != player
+                ? PlayerAState
+                : PlayerBState;
+        }
+
+        public PlayerState GetWinningPlayerState()
+        {
+            if (PlayerAState.WinPoints == PlayerBState.WinPoints)
+            {
+                return GetRandomPlayerState();
+            }
+
+            return PlayerAState.WinPoints > PlayerBState.WinPoints
+                ? PlayerAState
+                : PlayerBState;
+        }
+
+        public PlayerState GetPlayerStateHasFlag()
+        {
+            return GetPlayerState(PlayerHasFlag) ?? GetRandomPlayerState();
+        }
+
+        public PlayerState GetRandomPlayerState()
+        {
+            System.Random random = new System.Random();
+            
+            return random.Next() % 2 == 0
+                ? PlayerAState
+                : PlayerBState;
         }
     }
 
     public class PlayerState
     {
-        public IPlayer Player;
+        public readonly IPlayer Player;
+
+        public int MulliganCount = 2;
         public int WinPoints = 0;
         
-        public Dictionary<LevelType, CardPile> LevelCardPiles = new Dictionary<LevelType, CardPile>();
-        public CardPile Deck = new CardPile();
-        public CardPile Hand = new CardPile();
-        public CardPile Field = new CardPile();
-        public CardPile Exhausted = new CardPile();
+        public readonly CardPile Deck = new CardPile();
+        public readonly CardPile Field = new CardPile();
+        public readonly Bench Bench = new Bench();
+        public readonly CardPile Exhausted = new CardPile();
+        public readonly CardPile Deleted = new CardPile();
 
         public PlayerState(IPlayer player)
         {
             Player = player;
-        }
-
-        public List<Card> GetAllCardsOfDeck()
-        {
-            List<Card> cards = new List<Card>();
-            cards.AddRange(Deck);
-            cards.AddRange(LevelCardPiles.Values.SelectMany(cardPile => cardPile));
-
-            return cards;
         }
     }
 }

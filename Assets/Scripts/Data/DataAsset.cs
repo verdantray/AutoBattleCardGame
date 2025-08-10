@@ -50,25 +50,25 @@ namespace AutoBattleCardGame.Data.Editor
     [CustomEditor(typeof(DataAsset), editorForChildClasses: true)]
     public class DataAssetEditor : UnityEditor.Editor
     {
-        private readonly string[] _propertyNames = { "sheetAddress", "dataUpdaters" };
+        private readonly string[] propertyNames = { "sheetAddress", "dataUpdaters" };
         private static bool _foldOut = true;
         
-        private SerializedProperty[] _serializedProperties = null;
-        private EditorCoroutine _updateCoroutine = null;
+        private SerializedProperty[] serializedProperties = null;
+        private EditorCoroutine updateCoroutine = null;
         
         private void OnEnable()
         {
-            _serializedProperties = new SerializedProperty[_propertyNames.Length];
+            serializedProperties = new SerializedProperty[propertyNames.Length];
 
-            for (int i = 0; i < _propertyNames.Length; i++)
+            for (int i = 0; i < propertyNames.Length; i++)
             {
-                _serializedProperties[i] = serializedObject.FindProperty(_propertyNames[i]);
+                serializedProperties[i] = serializedObject.FindProperty(propertyNames[i]);
             }
         }
 
         public override void OnInspectorGUI()
         {
-            DrawPropertiesExcluding(serializedObject, _propertyNames);
+            DrawPropertiesExcluding(serializedObject, propertyNames);
             GUILayout.Space(EditorGUIUtility.singleLineHeight * 2.0f);
             DrawRemains();
 
@@ -82,7 +82,7 @@ namespace AutoBattleCardGame.Data.Editor
             _foldOut = EditorGUILayout.Foldout(_foldOut, "Update Data from sheets");
             if (_foldOut)
             {
-                foreach (SerializedProperty property in _serializedProperties)
+                foreach (SerializedProperty property in serializedProperties)
                 {
                     EditorGUILayout.PropertyField(property);
                 }
@@ -91,13 +91,13 @@ namespace AutoBattleCardGame.Data.Editor
             
                 if (GUILayout.Button("Update data from spread sheets"))
                 {
-                    if (_updateCoroutine != null)
+                    if (updateCoroutine != null)
                     {
-                        EditorCoroutineRunner.KillCoroutine(ref _updateCoroutine);
-                        _updateCoroutine = null;
+                        EditorCoroutineRunner.KillCoroutine(ref updateCoroutine);
+                        updateCoroutine = null;
                     }
 
-                    _updateCoroutine = EditorCoroutineRunner.StartCoroutine(UpdateDataRoutine());
+                    updateCoroutine = EditorCoroutineRunner.StartCoroutine(UpdateDataRoutine());
                 }
             }
             
