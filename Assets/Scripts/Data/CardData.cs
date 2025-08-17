@@ -9,13 +9,13 @@ namespace AutoBattleCardGame.Data
     [Flags]
     public enum SetType
     {
-        City = 1,
-        Castle = 2,
-        AmusementPark = 4,
-        OuterSpace = 8,
-        Studio = 16,
-        Sea = 32,
-        HauntedHouse = 64,
+        City = 2^0,
+        Castle = 2^1,
+        AmusementPark = 2^2,
+        OuterSpace = 2^3,
+        Studio = 2^4,
+        Sea = 2^5,
+        HauntedHouse = 2^6,
     }
     
     public enum LevelType

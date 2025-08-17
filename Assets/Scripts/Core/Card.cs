@@ -27,12 +27,12 @@ namespace AutoBattleCardGame.Core
         public void AddRange(IEnumerable<Card> cards) => cardList.AddRange(cards);
         public void Clear() => cardList.Clear();
 
-        public Card DrawCard()
+        public bool TryDraw(out Card card)
         {
-            Card toDraw =  cardList[0];
-            cardList.RemoveAt(0);
-            
-            return toDraw;
+            bool isSuccess = cardList.Count > 0;
+
+            card = isSuccess ? DrawCards(1).First() : null;
+            return isSuccess;
         }
 
         public IEnumerable<Card> DrawCards(int amount)
@@ -50,47 +50,6 @@ namespace AutoBattleCardGame.Core
             
             cardList.Clear();
             AddRange(randomized);
-        }
-    }
-
-    public class LevelCardPilesTemp : IReadOnlyDictionary<LevelType, CardPile>
-    {
-        private readonly Dictionary<LevelType, CardPile> levelCardPiles = new Dictionary<LevelType, CardPile>
-        {
-            { LevelType.A, new CardPile() },
-            { LevelType.B, new CardPile() },
-            { LevelType.C, new CardPile() },
-        };
-        
-        #region inherits of IDictionary
-        
-        public int Count => levelCardPiles.Count;
-        public CardPile this[LevelType key] =>  levelCardPiles[key];
-        public IEnumerable<LevelType> Keys => levelCardPiles.Keys;
-        public IEnumerable<CardPile> Values => levelCardPiles.Values;
-
-        public IEnumerator<KeyValuePair<LevelType, CardPile>> GetEnumerator() =>  levelCardPiles.GetEnumerator();
-        IEnumerator IEnumerable.GetEnumerator() =>  levelCardPiles.GetEnumerator();
-        public bool ContainsKey(LevelType key) => levelCardPiles.ContainsKey(key);
-        public bool TryGetValue(LevelType key, out CardPile value) => levelCardPiles.TryGetValue(key, out value);
-
-        #endregion
-
-        public void PutCard(Card card)
-        {
-            levelCardPiles[card.LevelType].Add(card);
-        }
-        
-        public IEnumerable<Card> GetAllCards() => levelCardPiles.Values.SelectMany(cardPile => cardPile);
-        
-        public void Shuffle()
-        {
-            var cardPiles = levelCardPiles.Values;
-
-            foreach (CardPile cardPile in cardPiles)
-            {
-                cardPile.Shuffle();
-            }
         }
     }
 
@@ -125,6 +84,41 @@ namespace AutoBattleCardGame.Core
         {
             cardMap.Clear();
             keyOrderMap.Clear();
+        }
+
+        // Regardless success or failure, cards that comes as arg are put on the bench
+        public bool TryPut(IEnumerable<Card> cards, out int remainBenchSlots)
+        {
+            foreach (var card in cards)
+            {
+                if (keyOrderMap.ContainsKey(card.Name))
+                {
+                    cardMap[card.Name].Add(card);
+                    continue;
+                }
+
+                var existingOrders = keyOrderMap.Values;
+                int latestOrder = existingOrders.Max(); // if existingOrders is empty, then Max() will return 0
+
+                HashSet<int> missingOrders = new HashSet<int>(Enumerable.Range(1, latestOrder));
+
+                foreach (var existingOrder in existingOrders)
+                {
+                    missingOrders.Remove(existingOrder);
+                }
+
+                int newlyPuttingOrder = missingOrders.Count > 0
+                    ? missingOrders.Min()
+                    : latestOrder + 1;
+                
+                keyOrderMap.Add(card.Name, newlyPuttingOrder);
+
+                CardPile cardPile = new CardPile { card };
+                cardMap.Add(card.Name, cardPile);
+            }
+
+            remainBenchSlots = RemainBenchSlots;
+            return remainBenchSlots > 0;
         }
 
         public void PutCard(Card card)
@@ -179,7 +173,6 @@ namespace AutoBattleCardGame.Core
         public SetType SetType { get; private set; }
         public LevelType LevelType { get; private set; }
         public int Power { get; private set; }
-        public IPlayer Owner { get; private set; }
 
         // TODO : Use localization system after implements
         public string Name => cardData.nameKey;
@@ -194,12 +187,6 @@ namespace AutoBattleCardGame.Core
             SetType = this.cardData.setType;
             LevelType = this.cardData.levelType;
             Power = this.cardData.basePower;
-            Owner = null;
-        }
-
-        public void SetOwner(IPlayer player)
-        {
-            Owner = player;
         }
 
         public override string ToString()

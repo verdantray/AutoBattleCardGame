@@ -5,7 +5,7 @@ namespace AutoBattleCardGame.Core
     public interface IPlayer
     {
         public string Name { get; }
-        public Task<DrawCardsFromPilesAction> DrawCardsFromPilesAsync(RecruitOnRound recruitOnRound, LevelCardPilesTemp levelCardPilesTemp);
+        public Task<DrawCardsFromPilesAction> DrawCardsFromPilesAsync(int mulliganChances, RecruitOnRound recruitOnRound, LevelCardPiles levelCardPiles);
     }
 
     public interface IPlayerAction

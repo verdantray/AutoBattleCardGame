@@ -33,15 +33,15 @@ namespace AutoBattleCardGame.Core
         }
     }
 
-    public class DeckConstructionConsoleEvent : ConsoleContextEventBase
+    public class CardPilesConstructionConsoleEvent : ConsoleContextEventBase
     {
-        public DeckConstructionConsoleEvent(SetType setTypeFlag, IEnumerable<Card> cards)
+        public CardPilesConstructionConsoleEvent(SetType selectedSetTypeFlag, IEnumerable<Card> cards)
         {
             StringBuilder stringBuilder = new StringBuilder();
             
             SetType[] setTypes = Enum.GetValues(typeof(SetType)) as SetType[];
             var selectedSetNames = setTypes!
-                .Where(element => setTypeFlag.HasFlag(element))
+                .Where(element => selectedSetTypeFlag.HasFlag(element))
                 .Select(element => element.ToString());
 
             stringBuilder.AppendLine($"다음과 같은 카드 세트가 선택되었습니다. '{string.Join(", ", selectedSetNames)}'");
@@ -52,24 +52,29 @@ namespace AutoBattleCardGame.Core
         }
     }
 
-    public class DrawCardsConsoleEvent : ConsoleContextEventBase
+    public class DeckConstructionConsoleEvent : ConsoleContextEventBase
     {
-        private readonly IPlayer player;
-        
-        public DrawCardsConsoleEvent(IPlayer player, LevelType selectedLevel, List<Card> drawnCards)
+        public DeckConstructionConsoleEvent(IPlayer player, IEnumerable<Card> startingCards)
         {
-            this.player = player;
+            StringBuilder stringBuilder = new StringBuilder();
+
+            stringBuilder.AppendLine($"초기 덱을 구성합니다.");
+            stringBuilder.AppendLine($"영입한 챌린저들:\n{string.Join('\n', startingCards)}");
+
+            Message = $"플레이어 {player.Name} : {stringBuilder}";
+        }
+    }
+
+    public class RecruitConsoleEvent : ConsoleContextEventBase
+    {
+        public RecruitConsoleEvent(IPlayer player, LevelType selectedLevel, List<Card> drawnCards)
+        {
             StringBuilder stringBuilder = new StringBuilder();
             
             stringBuilder.AppendLine($"{selectedLevel} 레벨의 챌린저 {drawnCards.Count}명을 영입합니다.");
             stringBuilder.AppendLine($"영입한 챌린저들:\n{string.Join('\n', drawnCards)}");
 
-            Message = stringBuilder.ToString();
-        }
-
-        public override string ToString()
-        {
-            return $"플레이어 {player.Name} : {Message}";
+            Message = $"플레이어 {player.Name} : {stringBuilder}";
         }
     }
 }

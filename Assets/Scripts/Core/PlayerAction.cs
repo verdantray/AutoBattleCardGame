@@ -9,25 +9,24 @@ namespace AutoBattleCardGame.Core
 
         public readonly LevelType SelectedLevel;
         public readonly List<Card> DrawnCards;
-        public readonly List<Card> RetunedCards;
+        public readonly List<Card> CardsToReturn;
 
-        public DrawCardsFromPilesAction(IPlayer player, LevelType selectedLevel, List<Card> drawnCards, List<Card> returnedCards)
+        public DrawCardsFromPilesAction(IPlayer player, LevelType selectedLevel, List<Card> drawnCards, List<Card> cardsToReturn)
         {
             Player = player;
             SelectedLevel = selectedLevel;
             DrawnCards = drawnCards;
-            RetunedCards = returnedCards;
+            CardsToReturn = cardsToReturn;
         }
         
         public void ApplyState(GameState state)
         {
             PlayerState playerState = state.GetPlayerState(Player);
             
-            state.LevelCardPilesTemp[SelectedLevel].AddRange(RetunedCards);
-            state.LevelCardPilesTemp[SelectedLevel].Shuffle();
-            
             playerState.Deck.AddRange(DrawnCards);
-            playerState.Deck.Shuffle();
+            
+            state.LevelCardPiles[SelectedLevel].AddRange(CardsToReturn);
+            state.LevelCardPiles[SelectedLevel].Shuffle();
         }
     }
 }

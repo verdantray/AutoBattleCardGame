@@ -13,18 +13,15 @@ namespace AutoBattleCardGame.Core
             {
                 var handle = Addressables.LoadAssetAsync<GameDataAsset>(GameConst.Address.GAME_DATA_ASSET);
                 await handle.Task;
-
+                
                 Storage.CreateInstance(handle.Result);
                 Addressables.Release(handle);
                 
-                Debug.Log(
-                    $"CardData : {Storage.Instance.CardData.Count} /  RecruitData : {Storage.Instance.RecruitData.Count} / WinPointData : {Storage.Instance.WinPointData.Count}");
-
                 ScriptedPlayer playerA = new ScriptedPlayer("PlayerA");
                 ScriptedPlayer playerB = new ScriptedPlayer("PlayerB");
-
+                
                 Simulation simulation = new Simulation(playerA, playerB);
-                await simulation.Run();
+                await simulation.RunAsync();
             }
             catch (Exception e)
             {
