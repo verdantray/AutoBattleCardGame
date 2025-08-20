@@ -16,10 +16,12 @@ namespace AutoBattleCardGame.Core
         
         public IEnumerable<Card> GetAllCards() => levelCardPiles.Values.SelectMany(cardPile => cardPile);
 
-        public IEnumerable<Card> DrawCardPool(LevelType levelType, int mulliganChances)
+        public List<Card> DrawCardPool(LevelType levelType, int mulliganChances)
         {
-            int drawAmount = mulliganChances * GameConst.GameOption.RECRUIT_CARD_POOL_AMOUNT;
-            return levelCardPiles[levelType].DrawCards(drawAmount);
+            int drawAmount = mulliganChances * GameConst.GameOption.RECRUIT_HAND_AMOUNT;
+            return levelCardPiles[levelType]
+                .DrawCards(drawAmount)
+                .ToList();
         }
 
         #region inheritances of IDictionary

@@ -46,10 +46,10 @@ namespace AutoBattleCardGame.Core
         public void Shuffle(int seed = 0)
         {
             System.Random random = seed != 0 ? new System.Random(seed) : new System.Random();
-            var randomized = cardList.OrderBy(_ => random.Next());
+            List<Card> randomizedList = cardList.OrderBy(_ => random.Next()).ToList();
             
             cardList.Clear();
-            AddRange(randomized);
+            AddRange(randomizedList);
         }
     }
 
@@ -59,7 +59,7 @@ namespace AutoBattleCardGame.Core
         private readonly Dictionary<string, int> keyOrderMap = new Dictionary<string, int>(); // order starts at 1
         
         public int BenchLimit { get; private set; } = GameConst.GameOption.DEFAULT_BENCH_LIMIT;
-        public int RemainBenchSlots => cardMap.Count - BenchLimit;
+        public int RemainBenchSlots => BenchLimit - cardMap.Count;
 
         #region inherits of IReadOnlyDictionary
 
@@ -98,7 +98,7 @@ namespace AutoBattleCardGame.Core
                 }
 
                 var existingOrders = keyOrderMap.Values;
-                int latestOrder = existingOrders.Max(); // if existingOrders is empty, then Max() will return 0
+                int latestOrder = existingOrders.Count > 0 ? existingOrders.Max() : 0;
 
                 HashSet<int> missingOrders = new HashSet<int>(Enumerable.Range(1, latestOrder));
 

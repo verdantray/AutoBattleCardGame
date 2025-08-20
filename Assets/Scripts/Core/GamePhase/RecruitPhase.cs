@@ -9,18 +9,12 @@ namespace AutoBattleCardGame.Core
 {
 	public class RecruitPhase : IGamePhase
     {
-        private readonly RecruitOnRound recruitOnRound;
-        
-        public RecruitPhase(int round)
-        {
-            recruitOnRound = new RecruitOnRound(round);
-        }
-        
         public async Task ExecutePhaseAsync(SimulationContext simulationContext)
         {
             try
             {
                 GameState currentState = simulationContext.CurrentState;
+                RecruitOnRound recruitOnRound = new RecruitOnRound(currentState.Round);
                 
                 List<PlayerState> allPlayerStates = currentState.PlayerStates;
                 List<Task<DrawCardsFromPilesAction>> tasks = new List<Task<DrawCardsFromPilesAction>>();

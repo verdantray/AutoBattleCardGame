@@ -6,8 +6,7 @@ namespace AutoBattleCardGame.Core
     public class Storage
     {
         public static Storage Instance { get; private set; }
-
-        public readonly List<CardData> StartingCardData = new List<CardData>();
+        
         public readonly List<CardData> CardData = new List<CardData>();
         public readonly List<RecruitData> RecruitData = new List<RecruitData>();
         public readonly List<WinPointData> WinPointData = new List<WinPointData>();
@@ -16,7 +15,6 @@ namespace AutoBattleCardGame.Core
         {
             Instance = new Storage();
             
-            Instance.StartingCardData.AddRange(gameDataAsset.StartingCardData);
             Instance.CardData.AddRange(gameDataAsset.CardData);
             Instance.RecruitData.AddRange(gameDataAsset.RecruitData);
             Instance.WinPointData.AddRange(gameDataAsset.WinPointData);

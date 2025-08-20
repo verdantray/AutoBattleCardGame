@@ -9,26 +9,27 @@ namespace AutoBattleCardGame.Core
 {
     public class BattlePhase : IGamePhase
     {
-        private readonly int round;
-        private readonly WinPointOnRound winPointOnRound;
-
-        public BattlePhase(int round)
-        {
-            this.round = round;
-            winPointOnRound = new WinPointOnRound(round);
-        }
-
         public Task ExecutePhaseAsync(SimulationContext simulationContext)
         {
             try
             {
                 GameState currentState = simulationContext.CurrentState;
-                var matchingPairs = currentState.GetMatchingPairs(round);
+                var matchingPairs = currentState.GetMatchingPairs();
 
                 foreach (var (playerAState, playerBState) in matchingPairs)
                 {
-                    List<IContextEvent> contextEvents = RunMatch(playerAState, playerBState);
-                    simulationContext.CollectedEvents.AddRange(contextEvents);
+                    MatchResult matchResult = RunMatch(playerAState, playerBState);
+                    simulationContext.CollectedEvents.Add(new MatchFlowConsoleEvent(matchResult.MatchEvents));
+                    
+                    PlayerState winnerState = simulationContext.CurrentState.GetPlayerState(matchResult.Winner);
+                    WinPointOnRound winPointOnRound = new WinPointOnRound(currentState.Round);
+                    int winPoints = winPointOnRound.GetWinPoint();
+                    
+                    winnerState.WinPoints += winPoints;
+                    
+                    string message = $"플레이어 '{winnerState.Player.Name}'가 승리하여 {winPoints} 승점을 획득.\n"
+                                     + $"총점 : {winnerState.WinPoints}";
+                    simulationContext.CollectedEvents.Add(new CommonConsoleEvent(message));
                 }
 
                 return Task.CompletedTask;
@@ -40,40 +41,63 @@ namespace AutoBattleCardGame.Core
             }
         }
 
-        private static List<IContextEvent> RunMatch(PlayerState playerAState, PlayerState playerBState)
+        private static MatchResult RunMatch(PlayerState playerAState, PlayerState playerBState)
         {
+            MatchResult matchResult = new MatchResult();
+            
             var (defender, attacker) = GetMatchSidesOnStart(playerAState, playerBState);
             defender.HasFlag = true;
             attacker.HasFlag = false;
+            
+            matchResult.AddEvent(new MatchStartConsoleEvent(defender.Player, attacker.Player));
 
             if (!defender.TryDraw())
             {
                 // set attacker winner and return events
+                matchResult.SetWinner(attacker.Player);
+                matchResult.AddEvent(new MatchFinishConsoleEvent(attacker, defender, MatchFinishConsoleEvent.MatchEndReason.EndByEmptyHand));
+                
+                return matchResult;
             }
+            
+            matchResult.AddEvent(new DrawCardConsoleEvent(defender));
 
             while (true)
             {
-                int defenderPower = defender.GetPower();
-
-                while (attacker.GetPower() < defenderPower)
+                matchResult.AddEvent(new ComparePowerConsoleEvent(defender, attacker));
+                
+                while (attacker.GetPower() < defender.GetPower())
                 {
                     if (!attacker.TryDraw())
                     {
                         // set defender winner and return events
+                        matchResult.SetWinner(defender.Player);
+                        matchResult.AddEvent(new MatchFinishConsoleEvent(defender, attacker, MatchFinishConsoleEvent.MatchEndReason.EndByEmptyHand));
+                        
+                        return matchResult;
                     }
                     
-                    
+                    matchResult.AddEvent(new DrawCardConsoleEvent(attacker));
                 }
-
-                if (!defender.TryPutCardFieldToBench(out int remainBenchSlots))
+                
+                matchResult.AddEvent(new TryPutCardBenchConsoleEvent(defender));
+                
+                if (!defender.TryPutCardFieldToBench(out int _))
                 {
                     // set attacker winner and return events
+                    matchResult.SetWinner(attacker.Player);
+                    matchResult.AddEvent(new MatchFinishConsoleEvent(attacker, defender, MatchFinishConsoleEvent.MatchEndReason.EndByFullOfBench));
+                    
+                    return matchResult;
                 }
-
+                
+                // changes position between two players
                 (defender, attacker) = (attacker, defender);
+                defender.HasFlag = true;
+                attacker.HasFlag = false;
+                
+                matchResult.AddEvent(new SwitchPositionConsoleEvent(defender.Player, attacker.Player));
             }
-            
-            return null;
         }
 
         private static (MatchSide defender, MatchSide attacker) GetMatchSidesOnStart(PlayerState playerAState, PlayerState playerBState)

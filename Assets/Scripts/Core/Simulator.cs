@@ -16,21 +16,21 @@ namespace AutoBattleCardGame.Core
                 
                 Storage.CreateInstance(handle.Result);
                 Addressables.Release(handle);
+
+                IPlayer[] players = new IPlayer[2];
+
+                for (int i = 0; i < players.Length; i++)
+                {
+                    players[i] = new ScriptedPlayer($"플레이어 {(char)('A' + i)}");
+                }
                 
-                ScriptedPlayer playerA = new ScriptedPlayer("PlayerA");
-                ScriptedPlayer playerB = new ScriptedPlayer("PlayerB");
-                
-                Simulation simulation = new Simulation(playerA, playerB);
+                Simulation simulation = new Simulation(players);
                 await simulation.RunAsync();
             }
             catch (Exception e)
             {
                 Debug.LogWarning($"Simulator has error occured : {e}");
                 throw; // TODO 예외 처리
-            }
-            finally
-            {
-                Application.Quit();
             }
         }
     }

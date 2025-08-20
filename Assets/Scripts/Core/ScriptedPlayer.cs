@@ -27,13 +27,26 @@ namespace AutoBattleCardGame.Core
                 List<Card> cardsToDraw = new List<Card>();
                 List<Card> cardsToReturn = new List<Card>();
                 
-                var cardPool = levelCardPiles.DrawCardPool(level, mulliganChances);
+                List<Card> cardPool = levelCardPiles.DrawCardPool(level, mulliganChances);
                 int remainMulliganChances = mulliganChances;
 
-                while (cardsToDraw.Count == amount)
+                while (cardsToDraw.Count < amount)
                 {
-                    int drawAmount = Enumerable.Range(0, amount + 1).OrderBy(_ => random.Next()).First();
+                    remainMulliganChances--;
+                    int handSize = GameConst.GameOption.RECRUIT_HAND_AMOUNT - cardsToDraw.Count;
+                    List<Card> hand = cardPool.Take(handSize).OrderBy(_ => random.Next()).ToList();
+
+                    bool isLastChance = remainMulliganChances == 0;
+                    int remainAmount = amount - cardsToDraw.Count;
                     
+                    int drawAmount = isLastChance
+                        ? remainAmount
+                        : Enumerable.Range(0, remainAmount + 1)
+                            .OrderBy(_ => random.Next())
+                            .First();
+
+                    cardsToDraw.AddRange(hand.Take(drawAmount));
+                    cardsToReturn.AddRange(hand.Skip(drawAmount));
                 }
 
                 DrawCardsFromPilesAction action = new DrawCardsFromPilesAction(this, level, cardsToDraw, cardsToReturn);

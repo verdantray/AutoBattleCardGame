@@ -9,12 +9,10 @@ namespace AutoBattleCardGame.Core
     {
         private readonly SimulationContext simulationContext;
         private readonly Queue<IGamePhase> gamePhases = new Queue<IGamePhase>();
-
-        private int eventIndex = 0;
         
         public Simulation(params IPlayer[] players)
         {
-            if (players.Length is >= GameConst.GameOption.MAX_MATCHING_PLAYERS or 0)
+            if (players.Length is > GameConst.GameOption.MAX_MATCHING_PLAYERS or 0)
             {
                 var exceptionMsg = "Players must have at least one, "
                                    + $"same or less than {GameConst.GameOption.MAX_MATCHING_PLAYERS}";
@@ -35,16 +33,14 @@ namespace AutoBattleCardGame.Core
 
         private void InitializeGamePhases()
         {
-            eventIndex = 0;
-            
             gamePhases.Clear();
             gamePhases.Enqueue(new DeckConstructionPhase());
 
             for (int round = 1; round <= GameConst.GameOption.MAX_ROUND; round++)
             {
                 gamePhases.Enqueue(new PreparationPhase(round));
-                gamePhases.Enqueue(new RecruitPhase(round));
-                gamePhases.Enqueue(new BattlePhase(round));
+                gamePhases.Enqueue(new RecruitPhase());
+                gamePhases.Enqueue(new BattlePhase());
             }
             
             gamePhases.Enqueue(new SettlementPhase());
@@ -58,17 +54,18 @@ namespace AutoBattleCardGame.Core
                 {
                     var phase = gamePhases.Dequeue();
                     await phase.ExecutePhaseAsync(simulationContext);
-
-                    for (; eventIndex <= simulationContext.CollectedEvents.Count ; eventIndex++)
-                    {
-                        Debug.Log($"EventIndex : {eventIndex}");
-                        simulationContext.CollectedEvents[eventIndex].Trigger();
-                    }
                 }
             }
             catch (Exception e)
             {
                 Debug.LogWarning($"Simulation has an error occured : {e}");
+            }
+            finally
+            {
+                foreach (var contextEvent in simulationContext.CollectedEvents)
+                {
+                    contextEvent.Trigger();
+                }
             }
         }
     }

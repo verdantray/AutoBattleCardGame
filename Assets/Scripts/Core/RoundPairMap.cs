@@ -46,7 +46,7 @@ namespace AutoBattleCardGame.Core
 
         public RoundPairs GetRoundPairs(int round)
         {
-            return roundPairMap[round];
+            return roundPairMap[round - 1];
         }
     }
 

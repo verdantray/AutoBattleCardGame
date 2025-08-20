@@ -17,6 +17,7 @@ namespace AutoBattleCardGame.Core
         {
             try
             {
+                simulationContext.CurrentState.SetRound(round);
                 simulationContext.CollectedEvents.Add(new CommonConsoleEvent($"{round} 라운드 준비"));
                 
                 return Task.CompletedTask;

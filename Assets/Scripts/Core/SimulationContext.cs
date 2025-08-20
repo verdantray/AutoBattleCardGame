@@ -17,8 +17,9 @@ namespace AutoBattleCardGame.Core
     {
         public readonly LevelCardPiles LevelCardPiles = new LevelCardPiles();
         public readonly List<PlayerState> PlayerStates = new List<PlayerState>();
-        
         public readonly RoundPairMap RoundPairMap;
+
+        public int Round { get; private set; } = 0;
 
         public GameState(IEnumerable<IPlayer> players)
         {
@@ -34,10 +35,15 @@ namespace AutoBattleCardGame.Core
         {
             return PlayerStates.Find(state => state.Player == player);
         }
-        
-        public List<(PlayerState a, PlayerState b)> GetMatchingPairs(int round)
+
+        public void SetRound(int round)
         {
-            RoundPairs roundPairs = RoundPairMap.GetRoundPairs(round);
+            Round = round;
+        }
+        
+        public List<(PlayerState a, PlayerState b)> GetMatchingPairs()
+        {
+            RoundPairs roundPairs = RoundPairMap.GetRoundPairs(Round);
             
             return roundPairs.GetMatchingPlayerPairs(PlayerStates);
         }

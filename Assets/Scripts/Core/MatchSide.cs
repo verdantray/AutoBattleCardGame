@@ -36,6 +36,8 @@ namespace AutoBattleCardGame.Core
         public bool TryPutCardFieldToBench(out int remainBenchSlots)
         {
             bool isSuccessToPut = Bench.TryPut(Field, out remainBenchSlots);
+            Field.Clear();
+            
             if (isSuccessToPut)
             {
                 // TODO : call put to bench effect after implements card abilities

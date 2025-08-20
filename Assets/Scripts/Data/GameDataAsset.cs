@@ -8,12 +8,10 @@ namespace AutoBattleCardGame.Data
     public class GameDataAsset : DataAsset
     {
         [Header("Game Data")]
-        [SerializeField] private List<CardData> startingCardData;
         [SerializeField] private List<CardData> cardData;
         [SerializeField] private List<RecruitData> recruitData;
         [SerializeField] private List<WinPointData> winPointData;
-
-        public List<CardData> StartingCardData => startingCardData;
+        
         public List<CardData> CardData => cardData;
         public List<RecruitData> RecruitData => recruitData;
         public List<WinPointData> WinPointData => winPointData;
@@ -21,7 +19,10 @@ namespace AutoBattleCardGame.Data
 #if UNITY_EDITOR
         public override void UpdateDataFromSheet()
         {
-            UpdateData(nameof(startingCardData), startingCardData);
+            cardData.Clear();
+            recruitData.Clear();
+            winPointData.Clear();
+            
             UpdateData(nameof(cardData), cardData);
             UpdateData(nameof(recruitData), recruitData);
             UpdateData(nameof(winPointData), winPointData);
