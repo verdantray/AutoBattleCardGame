@@ -19,10 +19,6 @@ namespace AutoBattleCardGame.Data
 #if UNITY_EDITOR
         public override void UpdateDataFromSheet()
         {
-            cardData.Clear();
-            recruitData.Clear();
-            winPointData.Clear();
-            
             UpdateData(nameof(cardData), cardData);
             UpdateData(nameof(recruitData), recruitData);
             UpdateData(nameof(winPointData), winPointData);

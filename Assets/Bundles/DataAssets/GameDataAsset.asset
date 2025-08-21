@@ -14,16 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sheetAddress: 1wQ5OPEu1YpF1723OPkDaGFzqRKUCNSB9A2mby1ybu8E
   dataUpdaters:
-  - updateFieldName: Starting Card Data
-    sheetReader:
-      sheetName: 00. card_data_for_starting
-      startCell: A02
-      endCell: I06
   - updateFieldName: Card Data
     sheetReader:
-      sheetName: 00. card_data_for_card_piles
+      sheetName: 00. card_data_origin
       startCell: A02
-      endCell: I73
+      endCell: I77
   - updateFieldName: Recruit Data
     sheetReader:
       sheetName: 00. recruit_data_origin
@@ -34,10 +29,9 @@ MonoBehaviour:
       sheetName: 00. win_point_data_origin
       startCell: A02
       endCell: C16
-  startingCardData: []
   cardData:
   - id: card_s_newbie
-    setType: 0
+    setType: 2
     levelType: 0
     basePower: 1
     amount: 3
@@ -45,7 +39,7 @@ MonoBehaviour:
     descKey: 
     imagePath: 
   - id: card_s_talent
-    setType: 0
+    setType: 2
     levelType: 0
     basePower: 2
     amount: 1
@@ -53,7 +47,7 @@ MonoBehaviour:
     descKey: 
     imagePath: 
   - id: card_s_dog
-    setType: 0
+    setType: 2
     levelType: 0
     basePower: 3
     amount: 1
@@ -61,7 +55,7 @@ MonoBehaviour:
     descKey: 
     imagePath: 
   - id: card_s_champion
-    setType: 0
+    setType: 2
     levelType: 0
     basePower: 4
     amount: 1
@@ -69,7 +63,7 @@ MonoBehaviour:
     descKey: 
     imagePath: 
   - id: card_a_reporter
-    setType: 0
+    setType: 2
     levelType: 1
     basePower: 2
     amount: 4
@@ -77,7 +71,7 @@ MonoBehaviour:
     descKey: desc_skill_reporter
     imagePath: 
   - id: card_a_talent
-    setType: 0
+    setType: 2
     levelType: 1
     basePower: 2
     amount: 3
@@ -85,7 +79,7 @@ MonoBehaviour:
     descKey: desc_skill_rare
     imagePath: 
   - id: card_b_mascot
-    setType: 0
+    setType: 2
     levelType: 2
     basePower: 2
     amount: 4
@@ -93,7 +87,7 @@ MonoBehaviour:
     descKey: desc_skill_mascot
     imagePath: 
   - id: card_b_dog
-    setType: 0
+    setType: 2
     levelType: 2
     basePower: 3
     amount: 3
@@ -101,7 +95,7 @@ MonoBehaviour:
     descKey: desc_skill_rare
     imagePath: 
   - id: card_c_champion
-    setType: 0
+    setType: 2
     levelType: 3
     basePower: 4
     amount: 2
@@ -109,7 +103,7 @@ MonoBehaviour:
     descKey: desc_skill_rare
     imagePath: 
   - id: card_c_fan_bus
-    setType: 0
+    setType: 2
     levelType: 3
     basePower: 6
     amount: 4
@@ -117,7 +111,7 @@ MonoBehaviour:
     descKey: desc_skill_fan_bus
     imagePath: 
   - id: card_a_jester
-    setType: 1
+    setType: 3
     levelType: 1
     basePower: 1
     amount: 4
@@ -125,7 +119,7 @@ MonoBehaviour:
     descKey: desc_skill_jester
     imagePath: 
   - id: card_a_hermit
-    setType: 1
+    setType: 3
     levelType: 1
     basePower: 2
     amount: 4
@@ -133,7 +127,7 @@ MonoBehaviour:
     descKey: desc_skill_hermit
     imagePath: 
   - id: card_a_stablehand
-    setType: 1
+    setType: 3
     levelType: 1
     basePower: 2
     amount: 4
@@ -141,7 +135,7 @@ MonoBehaviour:
     descKey: desc_skill_stablehand
     imagePath: 
   - id: card_a_pig
-    setType: 1
+    setType: 3
     levelType: 1
     basePower: 3
     amount: 3
@@ -149,7 +143,7 @@ MonoBehaviour:
     descKey: desc_skill_rare
     imagePath: 
   - id: card_b_knight
-    setType: 1
+    setType: 3
     levelType: 2
     basePower: 3
     amount: 4
@@ -157,7 +151,7 @@ MonoBehaviour:
     descKey: desc_skill_knight
     imagePath: 
   - id: card_b_blacksmith
-    setType: 1
+    setType: 3
     levelType: 2
     basePower: 3
     amount: 4
@@ -165,7 +159,7 @@ MonoBehaviour:
     descKey: desc_skill_balcksmith
     imagePath: 
   - id: card_b_wizard
-    setType: 1
+    setType: 3
     levelType: 2
     basePower: 4
     amount: 4
@@ -173,7 +167,7 @@ MonoBehaviour:
     descKey: desc_skill_wizard
     imagePath: 
   - id: card_b_horse
-    setType: 1
+    setType: 3
     levelType: 2
     basePower: 5
     amount: 3
@@ -181,7 +175,7 @@ MonoBehaviour:
     descKey: desc_skill_rare
     imagePath: 
   - id: card_c_bard
-    setType: 1
+    setType: 3
     levelType: 3
     basePower: 4
     amount: 4
@@ -189,7 +183,7 @@ MonoBehaviour:
     descKey: desc_skill_bard
     imagePath: 
   - id: card_c_prince
-    setType: 1
+    setType: 3
     levelType: 3
     basePower: 5
     amount: 4
@@ -197,7 +191,7 @@ MonoBehaviour:
     descKey: desc_skill_prince
     imagePath: 
   - id: carfd_c_dragon
-    setType: 1
+    setType: 3
     levelType: 3
     basePower: 7
     amount: 2
@@ -205,7 +199,7 @@ MonoBehaviour:
     descKey: desc_skill_rare
     imagePath: 
   - id: card_a_clown
-    setType: 2
+    setType: 0
     levelType: 1
     basePower: 1
     amount: 4
@@ -213,7 +207,7 @@ MonoBehaviour:
     descKey: desc_skill_clown
     imagePath: 
   - id: card_a_juggling_master
-    setType: 2
+    setType: 0
     levelType: 1
     basePower: 2
     amount: 4
@@ -221,7 +215,7 @@ MonoBehaviour:
     descKey: desc_skill_juggling_master
     imagePath: 
   - id: card_a_street_vendor
-    setType: 2
+    setType: 0
     levelType: 1
     basePower: 2
     amount: 4
@@ -229,7 +223,7 @@ MonoBehaviour:
     descKey: desc_skill_street_vendor
     imagePath: 
   - id: card_a_pony
-    setType: 2
+    setType: 0
     levelType: 1
     basePower: 3
     amount: 3
@@ -237,7 +231,7 @@ MonoBehaviour:
     descKey: desc_skill_rare
     imagePath: 
   - id: card_b_mime_artist
-    setType: 2
+    setType: 0
     levelType: 2
     basePower: 1
     amount: 4
@@ -245,7 +239,7 @@ MonoBehaviour:
     descKey: desc_skill_mime_artist
     imagePath: 
   - id: card_b_fortune_teller
-    setType: 2
+    setType: 0
     levelType: 2
     basePower: 4
     amount: 4
@@ -253,7 +247,7 @@ MonoBehaviour:
     descKey: desc_skill_fortune_teller
     imagePath: 
   - id: card_b_fireworks_expert
-    setType: 2
+    setType: 0
     levelType: 2
     basePower: 4
     amount: 4
@@ -261,7 +255,7 @@ MonoBehaviour:
     descKey: desc_skill_fireworks_expert
     imagePath: 
   - id: card_b_rubber_duck
-    setType: 2
+    setType: 0
     levelType: 2
     basePower: 5
     amount: 3
@@ -269,7 +263,7 @@ MonoBehaviour:
     descKey: desc_skill_rare
     imagePath: 
   - id: card_c_magician
-    setType: 2
+    setType: 0
     levelType: 3
     basePower: 5
     amount: 4
@@ -277,7 +271,7 @@ MonoBehaviour:
     descKey: desc_skill_magician
     imagePath: 
   - id: card_c_bumper_car
-    setType: 2
+    setType: 0
     levelType: 3
     basePower: 6
     amount: 4
@@ -285,7 +279,7 @@ MonoBehaviour:
     descKey: desc_skill_bumper_car
     imagePath: 
   - id: card_c_teddy_bear
-    setType: 2
+    setType: 0
     levelType: 3
     basePower: 7
     amount: 2
@@ -293,7 +287,7 @@ MonoBehaviour:
     descKey: desc_skill_rare
     imagePath: 
   - id: card_a_escape_pod
-    setType: 3
+    setType: 1
     levelType: 1
     basePower: 1
     amount: 4
@@ -301,7 +295,7 @@ MonoBehaviour:
     descKey: desc_skill_escape_pod
     imagePath: 
   - id: card_a_shapeshifter
-    setType: 3
+    setType: 1
     levelType: 1
     basePower: 2
     amount: 4
@@ -309,7 +303,7 @@ MonoBehaviour:
     descKey: desc_skill_shapeshifter
     imagePath: 
   - id: card_a_ai
-    setType: 3
+    setType: 1
     levelType: 1
     basePower: 2
     amount: 3
@@ -317,7 +311,7 @@ MonoBehaviour:
     descKey: desc_skill_ai
     imagePath: 
   - id: card_a_cow
-    setType: 3
+    setType: 1
     levelType: 1
     basePower: 3
     amount: 3
@@ -325,7 +319,7 @@ MonoBehaviour:
     descKey: desc_skill_rare
     imagePath: 
   - id: card_b_band
-    setType: 3
+    setType: 1
     levelType: 2
     basePower: 3
     amount: 4
@@ -333,7 +327,7 @@ MonoBehaviour:
     descKey: desc_skill_band
     imagePath: 
   - id: card_b_ufo
-    setType: 3
+    setType: 1
     levelType: 2
     basePower: 3
     amount: 4
@@ -341,7 +335,7 @@ MonoBehaviour:
     descKey: desc_skill_ufo
     imagePath: 
   - id: card_b_clone
-    setType: 3
+    setType: 1
     levelType: 2
     basePower: 4
     amount: 5
@@ -349,7 +343,7 @@ MonoBehaviour:
     descKey: desc_skill_clone
     imagePath: 
   - id: card_b_alien
-    setType: 3
+    setType: 1
     levelType: 2
     basePower: 5
     amount: 3
@@ -357,7 +351,7 @@ MonoBehaviour:
     descKey: desc_skill_rare
     imagePath: 
   - id: card_c_hologram
-    setType: 3
+    setType: 1
     levelType: 3
     basePower: 4
     amount: 4
@@ -365,7 +359,7 @@ MonoBehaviour:
     descKey: desc_skill_hologram
     imagePath: 
   - id: card_c_sf_mania
-    setType: 3
+    setType: 1
     levelType: 3
     basePower: 6
     amount: 4
@@ -373,7 +367,7 @@ MonoBehaviour:
     descKey: desc_skill_sf_mania
     imagePath: 
   - id: card_c_slime
-    setType: 3
+    setType: 1
     levelType: 3
     basePower: 7
     amount: 2
@@ -381,7 +375,7 @@ MonoBehaviour:
     descKey: desc_skill_rare
     imagePath: 
   - id: card_a_makeup_artist
-    setType: 4
+    setType: 6
     levelType: 1
     basePower: 1
     amount: 4
@@ -389,7 +383,7 @@ MonoBehaviour:
     descKey: desc_skill_makeup_artist
     imagePath: 
   - id: card_a_famous_actor
-    setType: 4
+    setType: 6
     levelType: 1
     basePower: 2
     amount: 4
@@ -397,7 +391,7 @@ MonoBehaviour:
     descKey: desc_skill_famous_actor
     imagePath: 
   - id: card_a_gangster
-    setType: 4
+    setType: 6
     levelType: 1
     basePower: 2
     amount: 4
@@ -405,7 +399,7 @@ MonoBehaviour:
     descKey: desc_skill_gangster
     imagePath: 
   - id: card_a_cat
-    setType: 4
+    setType: 6
     levelType: 1
     basePower: 3
     amount: 3
@@ -413,7 +407,7 @@ MonoBehaviour:
     descKey: desc_skill_rare
     imagePath: 
   - id: card_b_cowboy
-    setType: 4
+    setType: 6
     levelType: 2
     basePower: 3
     amount: 4
@@ -421,7 +415,7 @@ MonoBehaviour:
     descKey: desc_skill_cowboy
     imagePath: 
   - id: card_b_cartoon_character
-    setType: 4
+    setType: 6
     levelType: 2
     basePower: 4
     amount: 4
@@ -429,7 +423,7 @@ MonoBehaviour:
     descKey: desc_skill_cartoon_character
     imagePath: 
   - id: card_b_director
-    setType: 4
+    setType: 6
     levelType: 2
     basePower: 4
     amount: 4
@@ -437,7 +431,7 @@ MonoBehaviour:
     descKey: desc_skill_director
     imagePath: 
   - id: card_b_lion
-    setType: 4
+    setType: 6
     levelType: 2
     basePower: 5
     amount: 3
@@ -445,7 +439,7 @@ MonoBehaviour:
     descKey: desc_skill_rare
     imagePath: 
   - id: card_c_hero
-    setType: 4
+    setType: 6
     levelType: 3
     basePower: 5
     amount: 4
@@ -453,7 +447,7 @@ MonoBehaviour:
     descKey: desc_skill_hero
     imagePath: 
   - id: card_c_villian
-    setType: 4
+    setType: 6
     levelType: 3
     basePower: 10
     amount: 4
@@ -461,7 +455,7 @@ MonoBehaviour:
     descKey: desc_skill_villian
     imagePath: 
   - id: card_c_tyrannosaurus
-    setType: 4
+    setType: 6
     levelType: 3
     basePower: 7
     amount: 0
@@ -469,7 +463,7 @@ MonoBehaviour:
     descKey: desc_skill_rare
     imagePath: 
   - id: card_a_mermaid
-    setType: 5
+    setType: 7
     levelType: 1
     basePower: 1
     amount: 4
@@ -477,7 +471,7 @@ MonoBehaviour:
     descKey: desc_skill_mermaid
     imagePath: 
   - id: card_a_treasure
-    setType: 5
+    setType: 7
     levelType: 1
     basePower: 2
     amount: 4
@@ -485,7 +479,7 @@ MonoBehaviour:
     descKey: desc_skill_treasure
     imagePath: 
   - id: card_a_sailor
-    setType: 5
+    setType: 7
     levelType: 1
     basePower: 2
     amount: 4
@@ -493,7 +487,7 @@ MonoBehaviour:
     descKey: desc_skill_sailor
     imagePath: 
   - id: card_a_parrot
-    setType: 5
+    setType: 7
     levelType: 1
     basePower: 3
     amount: 3
@@ -501,7 +495,7 @@ MonoBehaviour:
     descKey: desc_skill_rare
     imagePath: 
   - id: card_b_chef
-    setType: 5
+    setType: 7
     levelType: 2
     basePower: 2
     amount: 4
@@ -509,7 +503,7 @@ MonoBehaviour:
     descKey: desc_skill_chef
     imagePath: 
   - id: card_b_safety_guard
-    setType: 5
+    setType: 7
     levelType: 2
     basePower: 4
     amount: 4
@@ -517,7 +511,7 @@ MonoBehaviour:
     descKey: desc_skill_safety_guard
     imagePath: 
   - id: card_b_navigator
-    setType: 5
+    setType: 7
     levelType: 2
     basePower: 4
     amount: 4
@@ -525,7 +519,7 @@ MonoBehaviour:
     descKey: desc_skill_navigator
     imagePath: 
   - id: card_b_shark
-    setType: 5
+    setType: 7
     levelType: 2
     basePower: 5
     amount: 3
@@ -533,7 +527,7 @@ MonoBehaviour:
     descKey: desc_skill_rare
     imagePath: 
   - id: card_c_siren
-    setType: 5
+    setType: 7
     levelType: 3
     basePower: 6
     amount: 4
@@ -541,7 +535,7 @@ MonoBehaviour:
     descKey: desc_skill_siren
     imagePath: 
   - id: card_c_submarine
-    setType: 5
+    setType: 7
     levelType: 3
     basePower: 9
     amount: 4
@@ -549,7 +543,7 @@ MonoBehaviour:
     descKey: desc_skill_submarine
     imagePath: 
   - id: card_c_kraken
-    setType: 5
+    setType: 7
     levelType: 3
     basePower: 7
     amount: 2
@@ -557,7 +551,7 @@ MonoBehaviour:
     descKey: desc_skill_rare
     imagePath: 
   - id: card_a_butler
-    setType: 6
+    setType: 4
     levelType: 1
     basePower: 1
     amount: 4
@@ -565,7 +559,7 @@ MonoBehaviour:
     descKey: desc_skill_butler
     imagePath: 
   - id: card_a_skeleton
-    setType: 6
+    setType: 4
     levelType: 1
     basePower: 2
     amount: 8
@@ -573,7 +567,7 @@ MonoBehaviour:
     descKey: desc_skill_skeleton
     imagePath: 
   - id: card_a_spider
-    setType: 6
+    setType: 4
     levelType: 1
     basePower: 3
     amount: 3
@@ -581,7 +575,7 @@ MonoBehaviour:
     descKey: desc_skill_rare
     imagePath: 
   - id: card_b_ghost
-    setType: 6
+    setType: 4
     levelType: 2
     basePower: 1
     amount: 4
@@ -589,7 +583,7 @@ MonoBehaviour:
     descKey: desc_skill_ghost
     imagePath: 
   - id: card_b_teenager
-    setType: 6
+    setType: 4
     levelType: 2
     basePower: 2
     amount: 4
@@ -597,7 +591,7 @@ MonoBehaviour:
     descKey: desc_skill_teenager
     imagePath: 
   - id: card_b_necromancer
-    setType: 6
+    setType: 4
     levelType: 2
     basePower: 3
     amount: 4
@@ -605,7 +599,7 @@ MonoBehaviour:
     descKey: desc_skill_necromancer
     imagePath: 
   - id: card_b_bat
-    setType: 6
+    setType: 4
     levelType: 2
     basePower: 5
     amount: 3
@@ -613,7 +607,7 @@ MonoBehaviour:
     descKey: desc_skill_rare
     imagePath: 
   - id: card_c_vampire
-    setType: 6
+    setType: 4
     levelType: 3
     basePower: 4
     amount: 4
@@ -621,7 +615,7 @@ MonoBehaviour:
     descKey: desc_skill_vampire
     imagePath: 
   - id: card_c_vacuum_cleaner
-    setType: 6
+    setType: 4
     levelType: 3
     basePower: 5
     amount: 4
@@ -629,7 +623,7 @@ MonoBehaviour:
     descKey: desc_skill_vacuum_cleaner
     imagePath: 
   - id: card_c_werewolf
-    setType: 6
+    setType: 4
     levelType: 3
     basePower: 7
     amount: 2
@@ -668,45 +662,45 @@ MonoBehaviour:
     recruitLevelType: 3
     amount: 2
   winPointData:
-  - round: 0
-    winPoint: 0
-    weight: 0
-  - round: 0
-    winPoint: 0
-    weight: 0
-  - round: 0
-    winPoint: 0
-    weight: 0
-  - round: 0
-    winPoint: 0
-    weight: 0
-  - round: 0
-    winPoint: 0
-    weight: 0
-  - round: 0
-    winPoint: 0
-    weight: 0
-  - round: 0
-    winPoint: 0
-    weight: 0
-  - round: 0
-    winPoint: 0
-    weight: 0
-  - round: 0
-    winPoint: 0
-    weight: 0
-  - round: 0
-    winPoint: 0
-    weight: 0
-  - round: 0
-    winPoint: 0
-    weight: 0
-  - round: 0
-    winPoint: 0
-    weight: 0
-  - round: 0
-    winPoint: 0
-    weight: 0
-  - round: 0
-    winPoint: 0
-    weight: 0
+  - round: 1
+    winPoint: 2
+    weight: 3
+  - round: 1
+    winPoint: 3
+    weight: 1
+  - round: 2
+    winPoint: 2
+    weight: 2
+  - round: 2
+    winPoint: 3
+    weight: 2
+  - round: 3
+    winPoint: 3
+    weight: 2
+  - round: 3
+    winPoint: 4
+    weight: 2
+  - round: 4
+    winPoint: 5
+    weight: 2
+  - round: 4
+    winPoint: 6
+    weight: 2
+  - round: 5
+    winPoint: 6
+    weight: 3
+  - round: 5
+    winPoint: 7
+    weight: 1
+  - round: 6
+    winPoint: 7
+    weight: 3
+  - round: 6
+    winPoint: 8
+    weight: 1
+  - round: 7
+    winPoint: 9
+    weight: 2
+  - round: 7
+    winPoint: 10
+    weight: 2

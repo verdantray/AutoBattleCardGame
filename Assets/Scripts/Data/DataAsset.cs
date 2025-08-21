@@ -54,7 +54,6 @@ namespace AutoBattleCardGame.Data.Editor
         private static bool _foldOut = true;
         
         private SerializedProperty[] serializedProperties = null;
-        private EditorCoroutine updateCoroutine = null;
         
         private void OnEnable()
         {
@@ -91,13 +90,7 @@ namespace AutoBattleCardGame.Data.Editor
             
                 if (GUILayout.Button("Update data from spread sheets"))
                 {
-                    if (updateCoroutine != null)
-                    {
-                        EditorCoroutineRunner.KillCoroutine(ref updateCoroutine);
-                        updateCoroutine = null;
-                    }
-
-                    updateCoroutine = EditorCoroutineRunner.StartCoroutine(UpdateDataRoutine());
+                    EditorCoroutineRunner.StartCoroutine(UpdateDataRoutine());
                 }
             }
             
