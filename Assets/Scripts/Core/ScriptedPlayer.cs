@@ -15,7 +15,7 @@ namespace AutoBattleCardGame.Core
             Name = name;
         }
 
-        public Task<DrawCardsFromPilesAction> DrawCardsFromPilesAsync(int mulliganChances, RecruitOnRound recruitOnRound, LevelCardPiles levelCardPiles)
+        public async Task<DrawCardsFromPilesAction> DrawCardsFromPilesAsync(int mulliganChances, RecruitOnRound recruitOnRound, LevelCardPiles levelCardPiles)
         {
             try
             {
@@ -25,16 +25,16 @@ namespace AutoBattleCardGame.Core
                     .First();
 
                 List<Card> cardsToDraw = new List<Card>();
-                List<Card> cardsToReturn = new List<Card>();
                 
-                List<Card> cardPool = levelCardPiles.DrawCardPool(level, mulliganChances);
                 int remainMulliganChances = mulliganChances;
 
                 while (cardsToDraw.Count < amount)
                 {
                     remainMulliganChances--;
+
+                    var cardPile = levelCardPiles[level];
                     int handSize = GameConst.GameOption.RECRUIT_HAND_AMOUNT - cardsToDraw.Count;
-                    List<Card> hand = cardPool.Take(handSize).OrderBy(_ => random.Next()).ToList();
+                    List<Card> cardPool = await cardPile.DrawCardsAsync(handSize);
 
                     bool isLastChance = remainMulliganChances == 0;
                     int remainAmount = amount - cardsToDraw.Count;
@@ -45,14 +45,15 @@ namespace AutoBattleCardGame.Core
                             .OrderBy(_ => random.Next())
                             .First();
 
-                    cardsToDraw.AddRange(hand.Take(drawAmount));
-                    cardsToReturn.AddRange(hand.Skip(drawAmount));
+                    cardsToDraw.AddRange(cardPool.Take(drawAmount));
+                    cardPool.RemoveRange(0, drawAmount);
+
+                    await cardPile.AddRangeAsync(cardPool);
                 }
 
-                DrawCardsFromPilesAction action = new DrawCardsFromPilesAction(this, level, cardsToDraw, cardsToReturn);
-                Task<DrawCardsFromPilesAction> task = Task.FromResult(action);
+                DrawCardsFromPilesAction action = new DrawCardsFromPilesAction(this, level, cardsToDraw);
                 
-                return task;
+                return action;
             }
             catch (Exception e)
             {

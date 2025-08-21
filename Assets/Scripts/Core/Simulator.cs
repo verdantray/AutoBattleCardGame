@@ -17,7 +17,7 @@ namespace AutoBattleCardGame.Core
                 Storage.CreateInstance(handle.Result);
                 Addressables.Release(handle);
 
-                IPlayer[] players = new IPlayer[2];
+                IPlayer[] players = new IPlayer[8];
 
                 for (int i = 0; i < players.Length; i++)
                 {

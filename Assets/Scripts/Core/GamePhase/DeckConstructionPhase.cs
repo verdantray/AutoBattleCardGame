@@ -9,7 +9,7 @@ namespace AutoBattleCardGame.Core
 {
     public class DeckConstructionPhase : IGamePhase
     {
-        public Task ExecutePhaseAsync(SimulationContext simulationContext)
+        public async Task ExecutePhaseAsync(SimulationContext simulationContext)
         {
             try
             {
@@ -17,7 +17,7 @@ namespace AutoBattleCardGame.Core
                 GameState currentState = simulationContext.CurrentState;
                 
                 SetType randomSelectedSetTypeFlag = GetRandomSelectedSetTypeFlag();
-                ReadOnlySpan<CardData> cardDataForPiles = Storage.Instance.CardData
+                CardData[] cardDataForPiles = Storage.Instance.CardData
                     .Where(data => randomSelectedSetTypeFlag.HasFlag(data.setType) && data.levelType != defaultDeckType)
                     .ToArray();
 
@@ -34,15 +34,15 @@ namespace AutoBattleCardGame.Core
 
                 foreach (var levelGroup in cardsForPutToFiles.GroupBy(card => card.LevelType))
                 {
-                    CardPile cardPile = currentState.LevelCardPiles[levelGroup.Key];
-                    cardPile.AddRange(levelGroup);
-                    cardPile.Shuffle();
+                    var cardPile = currentState.LevelCardPiles[levelGroup.Key];
+                    await cardPile.AddRangeAsync(levelGroup);
+                    await cardPile.ShuffleAsync();
                 }
 
                 var cardPilesConstructionEvent = new CardPilesConstructionConsoleEvent(randomSelectedSetTypeFlag, cardsForPutToFiles);
                 simulationContext.CollectedEvents.Add(cardPilesConstructionEvent);
 
-                ReadOnlySpan<CardData> startingCardData = Storage.Instance.CardData
+                CardData[] startingCardData = Storage.Instance.CardData
                     .Where(data => data.levelType == defaultDeckType)
                     .ToArray();
                 
@@ -60,8 +60,6 @@ namespace AutoBattleCardGame.Core
                     var deckConstructionEvent = new DeckConstructionConsoleEvent(playerState.Player, playerState.Deck);
                     simulationContext.CollectedEvents.Add(deckConstructionEvent);
                 }
-                
-                return Task.CompletedTask;
             }
             catch (Exception e)
             {

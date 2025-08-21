@@ -36,9 +36,8 @@ namespace AutoBattleCardGame.Core
                 foreach (DrawCardsFromPilesAction action in tasks.Select(task => task.Result))
                 {
                     action.ApplyState(currentState);
-                    RecruitConsoleEvent contextEvent =
-                        new RecruitConsoleEvent(action.Player, action.SelectedLevel, action.DrawnCards);
                     
+                    RecruitConsoleEvent contextEvent = new RecruitConsoleEvent(action.Player, action.SelectedLevel, action.DrawnCards);
                     simulationContext.CollectedEvents.Add(contextEvent);
                 }
             }
